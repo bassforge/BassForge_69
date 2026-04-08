@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="data:,">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>BassForge v5.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Russo+One&family=Share+Tech+Mono&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  
+  
+<style>
+/* BassForge v5.0 — style.css */
+:root {
+  --fire:#FF4D00;
+  --fire2:#FF7A00;
+  --fire-glow:rgba(255,77,0,.35);
+  --gr:#00FF88;
+  --gd:#FFD000;
+  --red:#FF3333;
+  --ice:#00CCFF;
+  --pu:#BB88FF;
+  --stone:#080808;
+  --stone2:#111111;
+  --stone3:#181818;
+  --stone4:#242424;
+  --stone5:#303030;
+  --wh:#F5F5F5;
+  --mu:#666666;
+  --mu2:#999999;
+}
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+html,body {
+  height:100%;
+  background:var(--stone);
+  color:var(--wh);
+  font-family:'Barlow',sans-serif;
+  overflow:hidden;
+}
+body {
+  display:flex;
+  flex-direction:column;
+}
+/* TOPBAR */ #topbar {
+  height:52px;
+  background:var(--stone2);
+  border-bottom:2px solid var(--fire);
+  display:flex;
+  align-items:center;
+  padding:0 14px;
+  flex-shrink:0;
+  gap:10px;
+  z-index:100;
+}
+#topbar h1 {
+  font-family:'Black Ops One',cursive;
+  font-size:20px;
+  letter-spacing:3px;
+  color:var(--wh);
+  filter:drop-shadow(0 0 8px var(--fire-glow));
+}
+#topbar h1 em {
+  color:var(--fire);
+  font-style:normal;
+}
+#hero-banner {
+  width: 100%;
+  height: auto;
+  min-height: 56px;
+  max-height: 80px;
+  position: relative;
+  flex-shrink: 0;
+  border-bottom: 2px solid var(--fire);
+  overflow: hidden;
+  background-color: #0e0e0e;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+}
+#hero-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 2.5px;
+  color: rgba(255,255,255,0.6);
+  z-index: 2;
+}
+.vbadge {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  letter-spacing:2px;
+  color:var(--fire);
+  border:1px solid rgba(255,77,0,.3);
+  padding:3px 8px;
+  border-radius:20px;
+  background:rgba(255,77,0,.06);
+}
+#hpill {
+  margin-left:auto;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1px;
+  padding:5px 12px;
+  border-radius:20px;
+  border:1px solid var(--stone5);
+  background:var(--stone3);
+  color:var(--mu);
+  transition:all .3s;
+}
+#hpill.ok {
+  border-color:rgba(0,255,136,.4);
+  color:var(--gr);
+  background:rgba(0,255,136,.06);
+}
+#hpill.warn {
+  border-color:rgba(255,208,0,.4);
+  color:var(--gd);
+  background:rgba(255,208,0,.06);
+}
+#hpill.bad {
+  border-color:rgba(255,51,51,.4);
+  color:var(--red);
+  background:rgba(255,51,51,.06);
+}
+/* TABS */ #tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  background: var(--stone2);
+  border-bottom: 1px solid var(--stone4);
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+#tabs::-webkit-scrollbar {
+  display:none;
+}
+.tab {
+  flex: 0 0 auto;
+  min-width: 52px;
+  max-width: 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 6px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  user-select: none;
+  transition: border-color .15s;
+}
+.tab.active {
+  border-bottom-color:var(--fire);
+}
+.tab .tic {
+  font-size:13px;
+}
+.tab .tlb {
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;
+  letter-spacing:1px;
+  color:var(--mu);
+}
+.tab.active .tlb {
+  color:var(--fire);
+}
+/* PANELS */ #panels {
+  flex:1;
+  overflow:hidden;
+  position:relative;
+  min-height:0;
+}
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 12px 80px;
+  display: none;
+  -webkit-overflow-scrolling: touch;
+}
+.panel.active {
+  display:block;
+}
+/* CARDS */ .card {
+  background:var(--stone2);
+  border:1px solid var(--stone4);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:10px;
+}
+.card.lit {
+  border-color:rgba(255,77,0,.2);
+  box-shadow:0 0 20px rgba(255,77,0,.04);
+}
+.card.grlit {
+  border-color:rgba(0,255,136,.2);
+  box-shadow:0 0 20px rgba(0,255,136,.03);
+}
+.ct {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  letter-spacing:3px;
+  color:var(--fire);
+  margin-bottom:12px;
+}
+.ct.gr {
+  color:var(--gr);
+}
+.ct.ice {
+  color:var(--ice);
+}
+.ct.gd {
+  color:var(--gd);
+}
+.ct.pu {
+  color:var(--pu);
+}
+/* INPUTS */ .g2 {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.g3 {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.ig {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.ig label {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  letter-spacing:1px;
+  color:var(--mu);
+}
+.ig input,.ig select {
+  background:var(--stone3);
+  border:1px solid var(--stone4);
+  border-radius:8px;
+  padding:10px 11px;
+  color:var(--wh);
+  font-family:'Share Tech Mono',monospace;
+  font-size:13px;
+  width:100%;
+  outline:none;
+  transition:border-color .2s;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.ig input:focus,.ig select:focus {
+  border-color:var(--fire);
+}
+/* TOGGLES */ .tg {
+  display:flex;
+  gap:4px;
+  margin-bottom:8px;
+}
+.tg button {
+  flex:1;
+  padding:9px 6px;
+  border:1px solid var(--stone4);
+  border-radius:7px;
+  background:var(--stone3);
+  font-family:'Russo One',sans-serif;
+  font-size:9px;
+  letter-spacing:1px;
+  color:var(--mu);
+  cursor:pointer;
+  transition:all .15s;
+}
+.tg button.on {
+  background:rgba(255,77,0,.1);
+  border-color:rgba(255,77,0,.4);
+  color:var(--fire);
+}
+/* BUTTONS */ .btn {
+  width:100%;
+  padding:14px;
+  background:linear-gradient(135deg,var(--fire),#cc2200);
+  border:none;
+  border-radius:10px;
+  font-family:'Russo One',sans-serif;
+  font-size:15px;
+  letter-spacing:3px;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(255,77,0,.25);
+  transition:transform .1s,box-shadow .1s;
+  margin-top:4px;
+}
+.btn:active {
+  transform:scale(.97);
+  box-shadow:none;
+}
+.btn.sm {
+  padding:10px;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-top:0;
+}
+.btn.gr-btn {
+  background:linear-gradient(135deg,var(--gr),#00aa55);
+  color:#000;
+  box-shadow:0 6px 20px rgba(0,255,136,.2);
+}
+.btn.ice-btn {
+  background:linear-gradient(135deg,var(--ice),#0088cc);
+  color:#000;
+  box-shadow:0 6px 20px rgba(0,204,255,.2);
+}
+.btn.outline {
+  background:transparent;
+  border:1px solid var(--fire);
+  color:var(--fire);
+  box-shadow:none;
+}
+/* ROWS */ .rl {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 11px;
+  background:var(--stone3);
+  border-radius:7px;
+  margin-bottom:4px;
+}
+.rk {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  color:var(--mu);
+}
+.rv {
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  font-weight:700;
+  color:var(--wh);
+}
+.rv.fire {
+  color:var(--fire);
+}
+.rv.gr {
+  color:var(--gr);
+}
+.rv.gd {
+  color:var(--gd);
+}
+.rv.red {
+  color:var(--red);
+}
+.rv.ice {
+  color:var(--ice);
+}
+/* BIG NUMBERS */ .bn3 {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+  margin-bottom:10px;
+}
+.bn4 {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-bottom:10px;
+}
+.bn {
+  background:var(--stone3);
+  border:1px solid var(--stone4);
+  border-radius:9px;
+  padding:10px 6px;
+  text-align:center;
+}
+.bv {
+  font-family:'Russo One',sans-serif;
+  font-size:20px;
+  color:var(--fire);
+}
+.bv.gr {
+  color:var(--gr);
+}
+.bv.gd {
+  color:var(--gd);
+}
+.bv.ice {
+  color:var(--ice);
+}
+.bv.red {
+  color:var(--red);
+}
+.bl {
+  letter-spacing:1.5px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:6px;
+  color:var(--mu);
+  letter-spacing:1px;
+  margin-top:2px;
+}
+.inp {
+  background:var(--stone3);
+  border:1px solid var(--stone5);
+  border-radius:7px;
+  color:var(--wh);
+  padding:9px 8px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  width:100%;
+  outline:none;
+}
+.inp:focus {
+  border-color:var(--fire);
+}
+.tc {
+  text-align:center;
+  font-size:13px;
+}
+/* PRESETS */ .pgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-bottom:10px;
+}
+.pb {
+  padding:11px 8px;
+  background:var(--stone3);
+  border:1px solid var(--stone4);
+  border-radius:9px;
+  cursor:pointer;
+  text-align:center;
+  user-select:none;
+  transition:all .15s;
+}
+.pb:active {
+  border-color:var(--fire);
+  background:rgba(255,77,0,.08);
+}
+.pn {
+  font-family:'Russo One',sans-serif;
+  font-size:11px;
+  color:var(--wh);
+  margin-bottom:3px;
+}
+.ps {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  color:var(--mu);
+}
+.pt {
+  display:inline-block;
+  margin-top:4px;
+  padding:2px 8px;
+  border-radius:20px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;
+}
+.dt {
+  background:rgba(0,255,136,.08);
+  border:1px solid rgba(0,255,136,.2);
+  color:var(--gr);
+}
+.st {
+  background:rgba(255,77,0,.08);
+  border:1px solid rgba(255,77,0,.25);
+  color:var(--fire);
+}
+.ct2 {
+  background:rgba(255,51,51,.08);
+  border:1px solid rgba(255,51,51,.25);
+  color:var(--red);
+}
+.qt {
+  background:rgba(0,204,255,.08);
+  border:1px solid rgba(0,204,255,.2);
+  color:var(--ice);
+}
+/* FORGE CERT */ .cert {
+  text-align:center;
+  padding:14px 10px;
+}
+.cert-icon {
+  font-size:44px;
+  margin-bottom:6px;
+}
+.cert-title {
+  font-family:'Black Ops One',cursive;
+  font-size:20px;
+  letter-spacing:3px;
+  margin-bottom:4px;
+}
+.cert-title.certified {
+  color:var(--gr);
+  filter:drop-shadow(0 0 10px rgba(0,255,136,.4));
+}
+.cert-title.warn {
+  color:var(--gd);
+}
+.cert-title.fail {
+  color:var(--red);
+}
+.cert-sub {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  color:var(--mu);
+  letter-spacing:2px;
+}
+/* HEALTH BAR */ .hbw {
+  height:10px;
+  background:var(--stone4);
+  border-radius:5px;
+  overflow:hidden;
+  margin:8px 0;
+}
+.hbf {
+  height:100%;
+  border-radius:5px;
+  transition:width .6s cubic-bezier(.4,0,.2,1),background .6s;
+}
+.hbl {
+  display:flex;
+  justify-content:space-between;
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;
+  color:var(--mu);
+  margin-bottom:4px;
+}
+/* TIA ITEMS */ .ti {
+  padding:10px 12px;
+  border-radius:8px;
+  margin-bottom:6px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  line-height:1.6;
+}
+.ti.ok {
+  background:rgba(0,255,136,.06);
+  border:1px solid rgba(0,255,136,.2);
+  color:var(--gr);
+}
+.ti.warn {
+  background:rgba(255,208,0,.06);
+  border:1px solid rgba(255,208,0,.2);
+  color:var(--gd);
+}
+.ti.bad {
+  background:rgba(255,51,51,.06);
+  border:1px solid rgba(255,51,51,.2);
+  color:var(--red);
+}
+.ti.info {
+  background:rgba(0,204,255,.06);
+  border:1px solid rgba(0,204,255,.2);
+  color:var(--ice);
+}
+/* WIRE */ .wn {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  background:var(--stone3);
+  border:1px solid var(--stone4);
+  border-radius:9px;
+  margin-bottom:5px;
+}
+.wnl {
+  font-family:'Russo One',sans-serif;
+  font-size:11px;
+  color:var(--wh);
+}
+.wns {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  color:var(--mu);
+  margin-top:1px;
+}
+.wline {
+  width:2px;
+  height:14px;
+  margin-left:25px;
+  border-left:2px dashed rgba(255,77,0,.3);
+}
+.ob {
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:20px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.ob.safe {
+  background:rgba(0,255,136,.1);
+  border:1px solid rgba(0,255,136,.3);
+  color:var(--gr);
+}
+.ob.warn {
+  background:rgba(255,208,0,.1);
+  border:1px solid rgba(255,208,0,.3);
+  color:var(--gd);
+}
+.ob.bad {
+  background:rgba(255,51,51,.1);
+  border:1px solid rgba(255,51,51,.3);
+  color:var(--red);
+}
+/* AUTO-FORGE RESULT */ .afr {
+  padding:14px;
+  border-radius:10px;
+  background:rgba(0,255,136,.04);
+  border:1px solid rgba(0,255,136,.2);
+  margin-top:10px;
+}
+.afr-title {
+  font-family:'Black Ops One',cursive;
+  font-size:14px;
+  letter-spacing:2px;
+  color:var(--gr);
+  margin-bottom:10px;
+}
+.afdim {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:6px;
+  margin-bottom:8px;
+}
+.afb {
+  background:var(--stone3);
+  border-radius:8px;
+  padding:8px;
+  text-align:center;
+}
+.afv {
+  font-family:'Black Ops One',cursive;
+  font-size:18px;
+  color:var(--gr);
+}
+.afl {
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;
+  color:var(--mu);
+  margin-top:1px;
+}
+/* SPL */ .splbig {
+  font-family:'Black Ops One',cursive;
+  font-size:54px;
+  text-align:center;
+  padding:10px 0;
+  filter:drop-shadow(0 0 16px currentColor);
+  transition:color .4s;
+}
+.stier {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px;
+  border-radius:7px;
+  margin-bottom:4px;
+}
+.stier.on {
+  background:rgba(255,77,0,.08);
+}
+.stlb {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  width:72px;
+  flex-shrink:0;
+}
+.strg {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  color:var(--mu);
+  width:48px;
+  flex-shrink:0;
+}
+.sbw {
+  flex:1;
+  height:5px;
+  background:var(--stone4);
+  border-radius:3px;
+  overflow:hidden;
+}
+.sbar {
+  height:100%;
+  border-radius:3px;
+  transition:width .5s;
+}
+/* CUT */ .ci {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  background:var(--stone2);
+  border:1px solid var(--stone4);
+  border-radius:9px;
+  padding:9px 11px;
+  margin-bottom:5px;
+}
+.cnum {
+  width:22px;
+  height:22px;
+  border-radius:5px;
+  background:rgba(255,77,0,.12);
+  border:1px solid rgba(255,77,0,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Black Ops One',cursive;
+  font-size:10px;
+  color:var(--fire);
+  flex-shrink:0;
+}
+.cinfo {
+  flex:1;
+}
+.cnm {
+  font-size:12px;
+  font-weight:600;
+  color:var(--wh);
+}
+.cdm {
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  color:var(--fire);
+  margin-top:1px;
+}
+.cqty {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  color:var(--mu);
+  background:var(--stone3);
+  padding:2px 7px;
+  border-radius:5px;
+}
+.matnote {
+  padding:11px;
+  background:rgba(255,208,0,.06);
+  border:1px solid rgba(255,208,0,.15);
+  border-radius:9px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  color:rgba(255,208,0,.8);
+  line-height:1.8;
+  margin-top:8px;
+}
+/* VBAR */ .vbw {
+  height:8px;
+  background:var(--stone4);
+  border-radius:4px;
+  overflow:hidden;
+  margin:6px 0;
+}
+.vbf {
+  height:100%;
+  border-radius:4px;
+  transition:width .5s,background .5s;
+}
+/* BIG3 */ .b3i {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  background:var(--stone3);
+  border:1px solid var(--stone4);
+  border-radius:9px;
+  margin-bottom:5px;
+}
+.b3c {
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  flex-shrink:0;
+}
+.b3c.done {
+  background:rgba(0,255,136,.15);
+  border:1px solid rgba(0,255,136,.3);
+}
+.b3c.need {
+  background:rgba(255,77,0,.12);
+  border:1px solid rgba(255,77,0,.3);
+}
+.b3t {
+  flex:1;
+}
+.b3n {
+  font-family:'Russo One',sans-serif;
+  font-size:11px;
+  color:var(--wh);
+}
+.b3s {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  color:var(--mu);
+  margin-top:2px;
+}
+/* SCORE */ .sw {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:14px 0 8px;
+}
+.snum {
+  font-family:'Black Ops One',cursive;
+  font-size:52px;
+  line-height:1;
+  filter:drop-shadow(0 0 16px currentColor);
+  transition:color .5s;
+}
+.slbl {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--mu);
+  margin-top:4px;
+}
+canvas {
+  width:100%;
+  display:block;
+  background:#050505;
+  border-radius:9px;
+}
+.disc {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  color:var(--mu);
+  text-align:center;
+  padding:12px 8px;
+  line-height:1.7;
+  border-top:1px solid var(--stone4);
+  margin-top:10px;
+}
+#af-spin {
+  display:none;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  color:var(--gd);
+  text-align:center;
+  padding:10px;
+  letter-spacing:2px;
+}
+.db-brand-btn {
+  transition: all .15s;
+}
+.db-brand-btn.active {
+  border-color: var(--fire) !important;
+  background: rgba(255,77,0,.1) !important;
+}
+.db-brand-btn:active {
+  transform: scale(0.96);
+}
+.db-size-btn {
+  transition: all .12s;
+}
+.db-size-btn.active {
+  border-color: var(--gr) !important;
+  color: var(--gr) !important;
+  background: rgba(0,255,136,.08) !important;
+}
+.db-model-card {
+  transition: border-color .15s, background .15s;
+}
+.db-model-card:active {
+  transform: scale(0.99);
+}
+.db-model-active {
+  border-color: var(--fire) !important;
+}
+</style>
+  
+  
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- External databases — edit subs.js and trucks.js to add data -->
+
+</head>
+<body>
+
+<div id="topbar">
+  
+  <span class="vbadge">v5.1</span>
+  <div id="hpill">TIA READY</div>
+</div>
+<div id="hero-banner">
+  
+  <div id="hero-badge">Low End Labs &nbsp;&middot;&nbsp; Est. 2026 &nbsp;&middot;&nbsp; Forge Your Bass</div>
+</div>
+
+<div id="forge-toast" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--gr);color:#000;font-family:'Black Ops One',cursive;font-size:12px;letter-spacing:2px;padding:10px 20px;border-radius:25px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;">&#9889; LOADED TO FORGE</div>
+<div id="tabs">
+  <div class="tab active" id="tab-forge" onclick="sw('forge')"><div class="tic">🔥</div><div class="tlb">FORGE</div></div>
+  <div class="tab" id="tab-box"   onclick="sw('box')"  ><div class="tic">📦</div><div class="tlb">BOX</div></div>
+  <div class="tab" id="tab-wire"  onclick="sw('wire')" ><div class="tic">⚡</div><div class="tlb">WIRE</div></div>
+  <div class="tab" id="tab-elec"  onclick="sw('elec')" ><div class="tic">🔋</div><div class="tlb">ELEC</div></div>
+  <div class="tab" id="tab-spl"   onclick="sw('spl')"  ><div class="tic">📊</div><div class="tlb">SPL</div></div>
+  <div class="tab" id="tab-subs"  onclick="sw('subs')" ><div class="tic">🔊</div><div class="tlb">SUBS</div></div>
+  <div class="tab" id="tab-cuts"  onclick="sw('cuts')" ><div class="tic">✂️</div><div class="tlb">CUTS</div></div>
+  <div class="tab" id="tab-audit" onclick="sw('audit')"><div class="tic">📋</div><div class="tlb">AUDIT</div></div>
+  <div class="tab" id="tab-comp" onclick="sw('comp')"><div class="tic">⚖️</div><div class="tlb">COMP</div></div>
+  <div class="tab" id="tab-hair"  onclick="sw('hair')" ><div class="tic">💨</div><div class="tlb">HAIR</div></div>
+  <div class="tab" id="tab-quote" onclick="sw('quote')"><div class="tic">💰</div><div class="tlb">QUOTE</div></div>
+  <div class="tab" id="tab-led"   onclick="sw('led')"  ><div class="tic">💡</div><div class="tlb">LED</div></div>
+  <div class="tab" id="tab-studio" onclick="sw('studio')"><div class="tic">🎵</div><div class="tlb">STUDIO</div></div>
+  <div class="tab" id="tab-social" onclick="sw('social')"><div class="tic">📸</div><div class="tlb">SOCIAL</div></div>
+  <div class="tab" id="tab-trunk" onclick="sw('trunk')"><div class="tic">&#x1F697;</div><div class="tlb">TRUNK</div></div>
+  <div class="tab" id="tab-blow" onclick="sw('blow')"><div class="tic">&#x1F4A8;</div><div class="tlb">BLOW</div></div>
+</div>
+
+<div id="panels">
+
+<!-- ═══ FORGE ═══ -->
+<div class="panel active" id="panel-forge">
+  <div class="card">
+    <div class="ct">// SYSTEM INPUTS</div>
+    <div class="g2">
+      <div class="ig"><label>TOTAL RMS (W)</label><input type="number" id="t_rms" value="1000" inputmode="numeric" oninput="lsync()"></div>
+      <div class="ig"><label>SUB QTY</label><input type="number" id="t_qty" value="2" min="1" max="16" inputmode="numeric" oninput="lsync()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>SUB SIZE</label>
+        <select id="t_sz" onchange="lsync()">
+          <option value="8">8"</option><option value="10">10"</option><option value="12" selected>12"</option><option value="15">15"</option><option value="18">18"</option>
+        </select>
+      </div>
+      <div class="ig"><label>SENSITIVITY (dB)</label><input type="number" id="t_sens" value="87" step="0.5" min="70" max="105" inputmode="decimal" oninput="splRunD()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>IMPEDANCE (Ω/coil)</label>
+        <select id="t_ohms" onchange="lsync()"><option value="1">1Ω</option><option value="2" selected>2Ω</option><option value="4">4Ω</option><option value="8">8Ω</option></select>
+      </div>
+      <div class="ig"><label>COIL TYPE</label>
+        <select id="t_dvc" onchange="lsync()"><option value="dvc">DVC (Dual)</option><option value="svc">SVC (Single)</option></select>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>VEHICLE</label>
+                <select id="t_veh" onchange="lsync()">
+          <option value="standard">Standard Trunk</option>
+          <!-- ADD VEHICLES HERE -->
+        </select>
+      </div>
+            <div id="trunk-info-card" style="display:none;background:rgba(0,204,255,.04);border:1px solid rgba(0,204,255,.2);border-radius:10px;padding:12px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--ice);">// TRUNK DATABASE MATCH</div>
+        <span id="trunk-verified-badge" style="font-family:'Share Tech Mono',monospace;font-size:7px;padding:2px 8px;border-radius:20px;"></span>
+      </div>
+      <div class="bn3" style="margin-bottom:8px;" id="trunk-dims-big"></div>
+      <div id="trunk-info-rows"></div>
+      
+    </div>
+    <div class="ig"><label>STOCK ALT (A)</label><input type="number" id="t_alt" value="130" min="60" max="400" inputmode="numeric" oninput="lsync()"></div>
+    </div>
+  </div>
+
+  <!-- QUICK PRESETS -->
+  <div class="card">
+    <div class="ct fire">// QUICK PRESETS</div>
+    <div class="pgrid" id="preset-grid"></div>
+  </div>
+
+  <!-- AUTO-FORGE SOLVER -->
+  <div class="card grlit">
+    <div class="ct gr">// AUTO-FORGE — DIMENSION SOLVER</div>
+    <p style="font-size:12px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Enter target volume and press AUTO-FORGE. The solver iterates width in 0.25" steps to find the exact box for your vehicle.</p>
+    <div class="g2">
+      <div class="ig"><label>TARGET NET VOL (FT³)</label><input type="number" id="af_vol" value="2.0" step="0.25" min="0.25" max="12" inputmode="decimal"></div>
+      <div class="ig"><label>TARGET TUNE (HZ)</label><input type="number" id="af_tune" value="34" min="20" max="55" inputmode="numeric"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>PORT WIDTH (IN)</label><input type="number" id="af_pw" value="3" step="0.25" min="1" max="12" inputmode="decimal"></div>
+      <div class="ig"><label>WOOD THICKNESS</label>
+        <select id="af_wood"><option value="0.5">1/2"</option><option value="0.75" selected>3/4" MDF</option><option value="1.0">1"</option></select>
+      </div>
+    </div>
+    <div id="af-spin">⚙ SOLVING...</div>
+    <button class="btn gr-btn" onclick="runAF()">⚙ AUTO-FORGE MY DIMENSIONS</button>
+    <div id="af-result"></div>
+  </div>
+
+  <button class="btn" onclick="runAudit()">⚡ RUN FULL TIA AUDIT</button>
+</div>
+
+<!-- ═══ BOX ═══ -->
+<div class="panel" id="panel-box">
+  <div class="card" style="padding:10px 14px;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);letter-spacing:2px;margin-bottom:8px;">ENCLOSURE TYPE</div>
+    <div class="tg">
+      <button class="on" id="bm_ported"  onclick="setBoxMode('ported')" >PORTED</button>
+      <button          id="bm_sealed"  onclick="setBoxMode('sealed')" >SEALED</button>
+      <button          id="bm_bp4"     onclick="setBoxMode('bp4')"    >4TH ORDER<br><span style="font-size:7px;opacity:.6">BANDPASS</span></button>
+      <button          id="bm_bp6"     onclick="setBoxMode('bp6')"    >6TH ORDER<br><span style="font-size:7px;opacity:.6">BANDPASS</span></button>
+    </div>
+  </div>
+  <div id="bm-shared-inputs">
+    <div class="card lit">
+      <div class="ct" id="box-mode-header">// MODULE 1 &#8212; ENCLOSURE PHYSICS</div>
+      <div class="g3">
+        <div class="ig"><label>WIDTH (IN)</label><input type="number" id="b_w" value="32" step="0.5" inputmode="decimal" oninput="runBoxMaster()"></div>
+        <div class="ig"><label>HEIGHT (IN)</label><input type="number" id="b_h" value="15" step="0.5" inputmode="decimal" oninput="runBoxMaster()"></div>
+        <div class="ig"><label>DEPTH (IN)</label><input type="number" id="b_d" value="18" step="0.5" inputmode="decimal" oninput="runBoxMaster()"></div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>SUB DISP (FT&#179;)</label><input type="number" id="b_disp" value="0.14" step="0.01" inputmode="decimal"></div>
+        <div class="ig"><label>WOOD THICKNESS</label>
+          <select id="b_wood"><option value="0.5">1/2"</option><option value="0.75" selected>3/4"</option><option value="1.0">1"</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="bm-ported-inputs">
+    <div class="card">
+      <div class="ct gd">// PORTED OPTIONS</div>
+
+
+      <div class="g2">
+        <div class="ig"><label>PORT WIDTH (IN)</label><input type="number" id="b_pw" value="3" step="0.25" inputmode="decimal"></div>
+        <div class="ig"><label>PORT LENGTH (IN)</label><input type="number" id="b_pl" value="24" step="0.25" inputmode="decimal"></div>
+      </div>
+      <div class="ig" style="margin-bottom:8px;"><label>PORT TYPE</label>
+        <select id="b_pt" onchange="runBoxMaster()">
+          <option value="slot">Standard Slot Port</option>
+          <option value="aero">Aeroport (Round Tube)</option>
+          <option value="kerf">Kerf-Fold Slot</option>
+        </select>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>DOUBLE BAFFLE</label>
+          <select id="b_dbl" onchange="runBoxMaster()">
+            <option value="0">Single Baffle</option>
+            <option value="1">Double Baffle (+3/4")</option>
+          </select>
+        </div>
+        <div class="ig"><label>PORT PLACEMENT</label>
+          <select id="b_port_pos" onchange="runBoxMaster()">
+            <option value="right">Right Side</option>
+            <option value="left">Left Side</option>
+            <option value="center">Center</option>
+            <option value="dual">Dual (Both Sides)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ig" style="margin-bottom:8px;"><label>BRACING FACTOR</label>
+        <select id="b_brace"><option value="0">None</option><option value="0.02">Light 2%</option><option value="0.03" selected>Standard 3%</option><option value="0.05">Heavy 5%</option></select>
+      </div>
+    </div>
+  </div>
+  <div id="bm-sealed-inputs" style="display:none;">
+    <div class="card">
+      <div class="ct ice">// SEALED OPTIONS</div>
+      <div class="ig"><label>TARGET Qtc</label>
+        <select id="s_qtc" onchange="runBoxMaster()">
+          <option value="0.577">0.577 &#8212; Bessel (most linear)</option>
+          <option value="0.707" selected>0.707 &#8212; Butterworth (flattest)</option>
+          <option value="1.0">1.0 &#8212; Chebyshev (most bass)</option>
+          <option value="0.5">0.5 — Over-damped (tightest)</option>
+        </select>
+      </div>
+      <div class="ig" style="margin-bottom:8px;"><label>BRACING FACTOR</label>
+        <select id="b_brace_s"><option value="0">None</option><option value="0.02">Light 2%</option><option value="0.03" selected>Standard 3%</option></select>
+      </div>
+      <div class="ti info">&#128161; Sealed boxes are more forgiving of size errors than ported. Good for daily builds where flat response matters more than max SPL.</div>
+    </div>
+  </div>
+  <div id="bm-bp4-inputs" style="display:none;">
+    <div class="card">
+      <div class="ct fire">// 4TH ORDER &#8212; T/S PARAMETERS</div>
+      <p style="font-size:11px;color:var(--mu2);margin-bottom:8px;line-height:1.5;">Load a sub from the SUBS tab for auto-calculation. Or enter T/S params manually.</p>
+      <div class="g3">
+        <div class="ig"><label>Fs (Hz)</label><input type="number" id="bp4_fs" placeholder="auto" step="0.1" inputmode="decimal"></div>
+        <div class="ig"><label>Qts</label><input type="number" id="bp4_qts" placeholder="auto" step="0.01" inputmode="decimal"></div>
+        <div class="ig"><label>Vas (L)</label><input type="number" id="bp4_vas" placeholder="auto" step="0.5" inputmode="decimal"></div>
+      </div>
+      <div class="ct gd" style="margin-top:8px;">// MANUAL OVERRIDE (optional)</div>
+      <div class="g3">
+        <div class="ig"><label>REAR VOL (ft&#179;)</label><input type="number" id="bp4_rear" placeholder="auto" step="0.05" inputmode="decimal"></div>
+        <div class="ig"><label>FRONT VOL (ft&#179;)</label><input type="number" id="bp4_front" placeholder="auto" step="0.05" inputmode="decimal"></div>
+        <div class="ig"><label>FRONT Fb (Hz)</label><input type="number" id="bp4_tune" placeholder="auto" step="0.5" inputmode="decimal"></div>
+      </div>
+      <div class="ti warn">&#9888;&#65039; 4th order bandpass: sealed rear chamber, ported front. Sub fires into sealed chamber. Output is highly directional and frequency-limited &#8212; SPL competition use.</div>
+    </div>
+  </div>
+  <div id="bm-bp6-inputs" style="display:none;">
+    <div class="card">
+      <div class="ct fire">// 6TH ORDER &#8212; T/S PARAMETERS</div>
+      <p style="font-size:11px;color:var(--mu2);margin-bottom:8px;line-height:1.5;">Both chambers are ported. Load a sub from SUBS for auto-calculation.</p>
+      <div class="g3">
+        <div class="ig"><label>Fs (Hz)</label><input type="number" id="bp6_fs" placeholder="auto" step="0.1" inputmode="decimal"></div>
+        <div class="ig"><label>Qts</label><input type="number" id="bp6_qts" placeholder="auto" step="0.01" inputmode="decimal"></div>
+        <div class="ig"><label>Vas (L)</label><input type="number" id="bp6_vas" placeholder="auto" step="0.5" inputmode="decimal"></div>
+      </div>
+      <div class="ct gd" style="margin-top:8px;">// MANUAL OVERRIDE (optional)</div>
+      <div class="g2">
+        <div class="ig"><label>REAR VOL (ft&#179;)</label><input type="number" id="bp6_rear" placeholder="auto" step="0.05" inputmode="decimal"></div>
+        <div class="ig"><label>REAR Fb (Hz)</label><input type="number" id="bp6_rear_tune" placeholder="auto" step="0.5" inputmode="decimal"></div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>FRONT VOL (ft&#179;)</label><input type="number" id="bp6_front" placeholder="auto" step="0.05" inputmode="decimal"></div>
+        <div class="ig"><label>FRONT Fb (Hz)</label><input type="number" id="bp6_front_tune" placeholder="auto" step="0.5" inputmode="decimal"></div>
+      </div>
+      <div class="ti bad">&#128293; 6th order bandpass: both chambers ported at different frequencies. Extreme SPL output in narrow band. Wrong Fb values can exceed Xmax and damage the sub. Always verify excursion with the SUBS tab first.</div>
+    </div>
+  </div>
+  <div id="box-trunk-warn" style="display:none;margin-bottom:8px;"></div>
+  <button class="btn" onclick="runBoxMaster()">&#9889; CALCULATE</button>
+  <div id="box-res" style="display:none;">
+    <div class="card" style="border-left:3px solid var(--pu);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);letter-spacing:2px;">WIND FACTOR</div>
+        <span id="hair-trick-status" style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--mu);">&#x1F4A8; CALCULATING...</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);letter-spacing:2px;">PORT RATIO</div>
+        <span id="port-ratio-display" style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--mu2);">--</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);letter-spacing:2px;">EST. BUILD COST</div>
+        <span id="box-build-cost" style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--gr);">--</span>
+      </div>
+      <!-- hair trick apply button moved to HAIR tab only -->
+    </div>
+    <div class="card"><div class="ct" id="box-res-header">// RESULTS</div><div class="bn3" id="box-big"></div><div id="box-rows"></div></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div class="ct" style="margin-bottom:0;">// 3D PREVIEW</div><div style="display:flex;gap:6px;"><button class="btn outline sm" onclick="toggle3D2D()" id="toggle-3d-btn" style="font-size:8px;padding:4px 10px;">2D</button><button class="btn outline sm" onclick="generateARModel()" id="ar-generate-btn" style="font-size:8px;padding:4px 10px;background:rgba(0,204,255,.1);border-color:var(--ice);color:var(--ice);">&#x1F4E6; AR</button></div></div><div style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);margin-bottom:6px;" id="ar-status">DRAG TO ROTATE &nbsp;&middot;&nbsp; PINCH TO ZOOM</div><canvas id="box-3d-canvas" style="width:100%;border-radius:8px;background:#0a0a0a;display:block;touch-action:none;" height="260"></canvas><model-viewer id="box-model-viewer" ar ar-modes="webxr scene-viewer quick-look" camera-controls touch-action="pan-y" shadow-intensity="1" alt="Subwoofer box 3D model" style="width:100%;height:280px;background:#0a0a0a;border-radius:8px;display:none;"><button slot="ar-button" style="position:absolute;bottom:12px;right:12px;background:var(--ice);color:#000;border:none;border-radius:8px;padding:8px 14px;font-family:Share Tech Mono,monospace;font-size:9px;cursor:pointer;font-weight:700;">&#x1F4F1; VIEW IN AR</button></model-viewer></div><div class="card" id="box-2d-card"><div class="ct">// 2D TOP-DOWN</div><canvas id="box-cv" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- ═══ BLOW-THROUGH ═══ -->
+<div class="panel" id="panel-blow">
+
+  <div class="card lit">
+    <div class="ct gd">// BLOW-THROUGH INPUTS</div>
+    <div class="g2">
+      <div class="ig"><label>CUT WIDTH (IN)</label><input type="number" id="bt_w" value="36" step="0.5" inputmode="decimal" oninput="runBlowThru()"></div>
+      <div class="ig"><label>CUT HEIGHT (IN)</label><input type="number" id="bt_h" value="14" step="0.5" inputmode="decimal" oninput="runBlowThru()"></div>
+    </div>
+    <div class="ig" style="margin-top:6px;"><label>CAB-TO-BED GAP DEPTH (IN)</label><input type="number" id="bt_gap" value="2.5" step="0.25" inputmode="decimal" oninput="runBlowThru()"></div>
+    <div class="ig" style="margin-top:6px;"><label>TARGET NET BOX VOL (FT&#179;)</label><input type="number" id="bt_netvol" value="2.0" step="0.25" inputmode="decimal" oninput="runBlowThru()"></div>
+    <div class="ti warn" style="margin-top:10px;">&#x26A0;&#xFE0F; MANDATORY: 2&quot; radius corners minimum. No sharp 90&deg; cuts &mdash; metal fatigue will crack it.</div>
+  </div>
+
+  <div class="card" id="bt-results" style="display:none;">
+    <div class="ct fire">// LIVE RESULTS</div>
+    <div class="bn3" id="bt-big"></div>
+    <div id="bt-rows" style="margin-top:10px;"></div>
+  </div>
+
+  <div id="bt-warn-card" class="card" style="display:none;background:rgba(255,51,51,.06);border-color:rgba(255,51,51,.25);">
+    <div class="ct" style="color:var(--red);">// &#x26A0; WARNINGS</div>
+    <div id="bt-warn-list"></div>
+  </div>
+
+  <div class="card" style="background:rgba(255,77,0,.04);border-color:rgba(255,77,0,.2);">
+    <div class="ct fire">// INSTALL CHECKLIST</div>
+    <div class="ti warn">&#x26A0;&#xFE0F; Radius ALL corners to 2&quot; min with a hole saw &mdash; no exceptions.</div>
+    <div class="ti info" style="margin-top:6px;">&#x1F9F0; Frame the cut with steel angle iron before the boot goes in.</div>
+    <div class="ti info" style="margin-top:6px;">&#x1F4A8; Accordion-style boot only &mdash; rigid seals crack from cab flex.</div>
+    <div class="ti info" style="margin-top:6px;">&#x1F527; Seal all edges with butyl rope. Zero air leaks or tuning is off.</div>
+    <div class="ti info" style="margin-top:6px;">&#x1F4CF; Measure twice. The cut is permanent.</div>
+  </div>
+
+</div>
+
+<!-- ═══ ELEC ═══ -->
+
+<!-- ═══ WIRE ═══ -->
+<div class="panel" id="panel-wire">
+  <div class="card lit">
+    <div class="ct ice">// WIRING DIAGRAM ENGINE</div>
+  </div>
+
+  <div class="card">
+    <div class="ct gd">// CONFIGURATION</div>
+    <div class="g2">
+      <div class="ig"><label>SUBS</label>
+        <input type="number" id="w_qty" value="1" min="1" max="12" inputmode="numeric" oninput="wireRun()">
+      </div>
+      <div class="ig"><label>VOICE COIL Ω</label>
+        <select id="w_ohms" onchange="wireRun()">
+          <option value="1">1 Ω</option>
+          <option value="2" selected>2 Ω</option>
+          <option value="4">4 Ω</option>
+        </select>
+      </div>
+    </div>
+    <div class="g2" style="margin-top:8px;">
+      <div class="ig"><label>COIL TYPE</label>
+        <select id="w_dvc" onchange="wireRun()">
+          <option value="dvc" selected>DVC</option>
+          <option value="svc">SVC</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="ct" style="font-size:11px;color:var(--mu2);margin-bottom:4px;">COIL WIRING</div>
+      <div class="tg" id="ctg">
+        <button class="on" onclick="setC('parallel',this)">PARALLEL</button>
+        <button onclick="setC('series',this)">SERIES</button>
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="ct" style="font-size:11px;color:var(--mu2);margin-bottom:4px;">SUB WIRING</div>
+      <div class="tg" id="stg">
+        <button class="on" onclick="setS('parallel',this)">PARALLEL</button>
+        <button onclick="setS('series',this)">SERIES</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct gd">// VISUAL DIAGRAM</div>
+    <div id="wire-diag" style="margin-bottom:8px;"></div>
+    <svg id="wire-svg-diag" style="width:100%;max-height:300px;display:block;"></svg>
+  </div>
+
+  <div class="card">
+    <div class="ct gr">// FINAL LOAD</div>
+    <div id="wire-final"></div>
+  </div>
+
+  <div class="card">
+    <div class="ct ice">// IMPEDANCE STABILITY</div>
+    <div id="wire-tbl"></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-elec">
+
+  <div class="card" style="padding:10px 14px;">
+    <div class="tg" id="elec-mode-tg" style="margin-bottom:0;">
+      <button class="on" id="em_simple" onclick="setElecMode('simple',this)">SIMPLE MODE<br><span style="font-size:7px;opacity:.6">1 AMP</span></button>
+      <button id="em_system" onclick="setElecMode('system',this)">SYSTEM MODE<br><span style="font-size:7px;opacity:.6">MULTI-AMP</span></button>
+    </div>
+  </div>
+
+  <div id="elec-simple">
+    <div class="card lit">
+      <div class="ct gd">// MODULE 3 — ELECTRICAL ENGINE</div>
+      <div style="margin-bottom:12px;">
+        <div style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);letter-spacing:2px;margin-bottom:6px;">SELECT AMP (AUTO-FILLS RMS)</div>
+        <div class="g2">
+          <div class="ig"><label>BRAND</label>
+            <select id="e_amp_brand" onchange="elecAmpBrand()">
+              <option value="">— Brand —</option>
+              <option value="sundown">Sundown Audio</option>
+              <option value="taramps">Taramps</option>
+              <option value="skar">Skar Audio</option>
+              <option value="jl_audio">JL Audio</option>
+              <option value="kicker">Kicker</option>
+              <option value="ct_sounds">CT Sounds</option>
+              <option value="d4s">Down4Sound</option>
+            </select>
+          </div>
+          <div class="ig"><label>MODEL</label>
+            <select id="e_amp_model" onchange="elecAmpModel()">
+              <option value="">— Model —</option>
+            </select>
+          </div>
+        </div>
+        <div id="e_amp_info" style="display:none;font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu2);margin-top:6px;line-height:1.8;"></div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>TOTAL RMS (W)</label><input type="number" id="e_rms" value="1000" inputmode="numeric" oninput="elecRunD()"></div>
+        <div class="ig"><label>WIRE GAUGE</label>
+          <select id="e_gauge" onchange="elecRun()">
+            <option value="2/0">2/0 AWG OFC</option><option value="1/0" selected>1/0 AWG OFC</option>
+            <option value="2AWG">2 AWG OFC</option><option value="4AWG">4 AWG OFC</option><option value="8AWG">8 AWG OFC</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);letter-spacing:2px;margin-bottom:6px;">ALT CONFIGURATION</div>
+        <div class="tg">
+          <button class="on" id="alt_single" onclick="setAltMode('single',this)">SINGLE ALT</button>
+          <button id="alt_dual" onclick="setAltMode('dual',this)">DUAL ALT</button>
+        </div>
+      </div>
+      <div id="alt-dual-field" style="display:none;margin-bottom:8px;">
+        <div class="g2">
+          <div class="ig"><label>ALT 1 (A)</label><input type="number" id="alt_1_amps" value="130" min="60" max="500" inputmode="numeric" oninput="elecRunD()"></div>
+          <div class="ig"><label>ALT 2 (A)</label><input type="number" id="alt_2_amps" value="200" min="60" max="500" inputmode="numeric" oninput="elecRunD()"></div>
+        </div>
+        <div class="ti warn" style="margin-top:4px;">&#9888;&#65039; Dual alt requires Big 3 — forced active.</div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>WIRE RUN (FT)</label><input type="number" id="e_len" value="15" min="1" max="50" inputmode="numeric" oninput="elecRunD()"></div>
+        <div class="ig"><label>STOCK ALT (A)</label><input type="number" id="e_alt" value="130" min="60" max="400" inputmode="numeric" oninput="elecRunD()"></div>
+      </div>
+      <div class="ig" style="margin-bottom:8px;"><label>BASE VEHICLE LOAD (A)</label><input type="number" id="e_load" value="40" min="10" max="80" inputmode="numeric" oninput="elecRunD()"></div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);letter-spacing:1px;margin-bottom:6px;">AMP CLASS</div>
+      <div class="tg" id="acg">
+        <button class="on" id="ac_d"  onclick="setAC('d',this)">CLASS D &middot; 85%<br><span style="font-size:7px;opacity:.6">SUB AMP</span></button>
+        <button id="ac_ab" onclick="setAC('ab',this)">CLASS AB &middot; 55%<br><span style="font-size:7px;opacity:.6">FULL RANGE</span></button>
+        <button id="ac_a"  onclick="setAC('a',this)">CLASS A &middot; 30%<br><span style="font-size:7px;opacity:.6">AUDIOPHILE</span></button>
+      </div>
+      <div class="ti info" id="ac-note" style="margin-bottom:0;">&#128161; Class D: Most efficient for subwoofers. 85% of draw becomes bass.</div>
+    </div>
+    <div class="card">
+      <div class="ct gd">// LIVE READINGS</div>
+      <div class="bn4" id="elec-big"></div>
+      <div id="elec-rows"></div>
+      <div style="margin-top:8px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);margin-bottom:4px;">VOLTAGE DROP</div>
+        <div class="vbw"><div class="vbf" id="e-vb" style="width:0%"></div></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;text-align:right;" id="e-vbl">&#8212;</div>
+      </div>
+    </div>
+    <div class="card"><div class="ct gd">// WIRE COMPARISON</div><div id="elec-tbl"></div></div>
+    <div class="card"><div class="ct gd">// BIG 3 UPGRADE</div><div class="tg" style="margin-bottom:8px;"><button id="big3_no"  class="on" onclick="setBig3(false,this)">&#x274C; NO BIG 3</button><button id="big3_yes"           onclick="setBig3(true,this)">&#x2705; I HAVE BIG 3</button></div><div id="b3status" style="font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu);line-height:1.6;">Big 3: Alt&#x2192;Batt &bull; Batt&#x2192;Chassis &bull; Alt&#x2192;Chassis &mdash; match your power wire gauge.</div><div id="b3list" style="margin-top:6px;"></div></div>
+  <div class="card">
+    <div class="ct ice">// FUSE CALCULATOR</div>
+    <div class="g2">
+      <div class="ig"><label>AMP RMS (W)</label><input type="number" id="fuse_rms" value="1500" inputmode="numeric" oninput="fuseRun()"></div>
+      <div class="ig"><label>AMP CLASS</label>
+        <select id="fuse_cls" onchange="fuseRun()">
+          <option value="d" selected>Class D (85%)</option>
+          <option value="ab">Class AB (55%)</option>
+          <option value="a">Class A (30%)</option>
+        </select>
+      </div>
+    </div>
+    <div class="ig" style="margin-bottom:8px;"><label>BIG 3 INSTALLED?</label>
+      <select id="fuse_big3" onchange="fuseRun()">
+        <option value="0">No — not done yet</option>
+        <option value="1">Yes — Big 3 complete</option>
+      </select>
+    </div>
+    <div id="fuse-res" style="display:none;"><div id="fuse-out"></div></div>
+    <button class="btn outline sm" onclick="fuseRun()">CALCULATE FUSES</button>
+  </div>  <div class="card">
+    <div class="ct gd">// THERMAL CALCULATOR</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:8px;line-height:1.5;">Estimate amp case temp and sub voice coil temperature based on your setup.</p>
+    <div class="g2">
+      <div class="ig"><label>AMP RMS (W)</label><input type="number" id="th_rms" value="1500" inputmode="numeric" oninput="thermalRun()"></div>
+      <div class="ig"><label>AMP CLASS</label>
+        <select id="th_cls" onchange="thermalRun()">
+          <option value="d" selected>Class D</option>
+          <option value="ab">Class AB</option>
+          <option value="a">Class A</option>
+        </select>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>AMBIENT TEMP (°C)</label><input type="number" id="th_amb" value="25" min="0" max="60" inputmode="numeric" oninput="thermalRun()"></div>
+      <div class="ig"><label>DUTY CYCLE (%)</label><input type="number" id="th_duty" value="50" min="1" max="100" inputmode="numeric" oninput="thermalRun()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>SUB VC RESIST. (Ω)</label><input type="number" id="th_re" value="2" step="0.5" inputmode="decimal" oninput="thermalRun()"></div>
+      <div class="ig"><label>SUB Pe (W)</label><input type="number" id="th_pe" value="1500" inputmode="numeric" oninput="thermalRun()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>NUM SUBS</label><input type="number" id="th_qty" value="1" min="1" max="18" inputmode="numeric" oninput="thermalRun()"></div>
+      <div class="ig"><label>AMP HAS FAN?</label>
+        <select id="th_fan" onchange="thermalRun()">
+          <option value="0">No fan</option>
+          <option value="1">Yes — has cooling fan</option>
+        </select>
+      </div>
+    </div>
+    <div class="ig" style="margin-bottom:8px;"><label>AMP MOUNTING</label>
+      <select id="th_vent" onchange="thermalRun()">
+        <option value="0">Enclosed / no airflow</option>
+        <option value="1">Vented / open air</option>
+      </select>
+    </div>
+    <div id="thermal-res" style="display:none;"><div id="thermal-out"></div></div>
+    <button class="btn outline sm" onclick="thermalRun()">CALCULATE TEMPS</button>
+  </div>
+
+  </div>
+
+  <div id="elec-system" style="display:none;">
+    <div class="card lit">
+      <div class="ct gd">// SYSTEM — SHARED ELECTRICAL</div>
+      <div class="g2">
+        <div class="ig"><label>ALTERNATOR (A)</label><input type="number" id="sys_alt" value="240" min="60" max="600" inputmode="numeric" oninput="sysRunD()"></div>
+        <div class="ig"><label>BASE VEHICLE LOAD (A)</label><input type="number" id="sys_load" value="40" min="10" max="100" inputmode="numeric" oninput="sysRunD()"></div>
+      </div>
+      <div class="g2">
+        <div class="ig"><label>MAIN WIRE (BATT&#8594;DIST)</label>
+          <select id="sys_main_gauge" onchange="sysRun()">
+            <option value="4/0">4/0 AWG &#8212; 500A</option>
+            <option value="2/0" selected>2/0 AWG &#8212; 400A</option>
+            <option value="1/0">1/0 AWG &#8212; 300A</option>
+            <option value="2AWG">2 AWG &#8212; 200A</option>
+          </select>
+        </div>
+        <div class="ig"><label>MAIN RUN (FT)</label><input type="number" id="sys_main_len" value="12" min="1" max="30" inputmode="numeric" oninput="sysRunD()"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct gd">// SECOND BATTERY</div>
+      <div class="tg" style="margin-bottom:8px;">
+        <button class="on" id="bat2_off" onclick="setBat2(false,this)">NO 2ND BATTERY</button>
+        <button id="bat2_on" onclick="setBat2(true,this)">2ND BATTERY INSTALLED</button>
+      </div>
+      <div id="bat2-inputs" style="display:none;">
+        <div class="g2">
+          <div class="ig"><label>CAPACITY (Ah)</label><input type="number" id="bat2_ah" value="35" min="5" max="200" inputmode="numeric" oninput="sysRunD()"></div>
+          <div class="ig"><label>BATTERY TYPE</label>
+            <select id="bat2_type" onchange="sysRun()">
+              <option value="agm">AGM (deep cycle)</option>
+              <option value="lifepo4">LiFePO4</option>
+              <option value="lead">Standard Lead Acid</option>
+            </select>
+          </div>
+        </div>
+        <div class="ig"><label>ISOLATOR / D2D CHARGER?</label>
+          <select id="bat2_iso" onchange="sysRun()">
+            <option value="1">Yes &#8212; isolated (recommended)</option>
+            <option value="0">No &#8212; direct parallel</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="sys-amps-list"></div>
+    <button class="btn outline sm" style="margin-bottom:10px;" onclick="sysAddAmp()">+ ADD AMP</button>
+
+    <div id="sys-results" style="display:none;">
+      <div class="card"><div class="ct gd">// SYSTEM TOTALS</div><div class="bn4" id="sys-big"></div><div id="sys-rows"></div></div>
+      <div class="card"><div class="ct gd">// PER-AMP BREAKDOWN</div><div id="sys-amp-rows"></div></div>
+      <div class="card"><div class="ct gd">// BIG 3 &#8212; SYSTEM LEVEL</div><div id="sys-b3"></div></div>
+      <div class="card"><div class="ct gd">// WEAKEST LINK</div><div id="sys-weak"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct gd">// CLIPPING RISK CALCULATOR</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Clipped signal is the #1 cause of blown subs. Holds the voice coil at max current with no recovery &#8212; more destructive than clean overpower.</p>
+    <div class="g2">
+      <div class="ig"><label>HEAD UNIT OUTPUT (V)</label><input type="number" id="clip_hu" value="4" step="0.5" min="0.5" max="8" inputmode="decimal" oninput="clipRunD()"></div>
+      <div class="ig"><label>AMP SENSITIVITY (V)</label><input type="number" id="clip_sens" value="4" step="0.5" min="0.2" max="8" inputmode="decimal" oninput="clipRunD()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>GAIN POSITION (0-100%)</label><input type="number" id="clip_gain" value="50" min="0" max="100" inputmode="numeric" oninput="clipRunD()"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);margin-top:2px;">0=min 100=max</div></div>
+      <div class="ig"><label>SIGNAL PROCESSOR?</label>
+        <select id="clip_proc" onchange="clipRun()">
+          <option value="1">No processor</option>
+          <option value="0.85">DSP / Line driver</option>
+          <option value="0.7">Bass knob only</option>
+        </select>
+      </div>
+    </div>
+    <div id="clip-result" style="margin-top:6px;"></div>
+  </div>
+
+</div>
+
+<!-- ═══ SPL ═══ -->
+<div class="panel" id="panel-spl">
+  <div class="card lit">
+    <div class="ct pu">// SPL PREDICTION ENGINE</div>
+    <div class="g2">
+      <div class="ig"><label>SENSITIVITY (dB/W/m)</label><input type="number" id="sp_s" value="87" step="0.5" min="70" max="105" inputmode="decimal" oninput="splRunD()"></div>
+      <div class="ig"><label>AMP WATTS RMS</label><input type="number" id="sp_w" value="1000" step="100" min="50" max="20000" inputmode="numeric" oninput="splRunD()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>NUM SUBS</label><input type="number" id="sp_n" value="1" min="1" max="8" inputmode="numeric" oninput="splRunD()"></div>
+      <div class="ig"><label>PORT VELOCITY (M/S)</label><input type="number" id="sp_v" value="14" step="0.5" min="0" max="40" inputmode="decimal" oninput="splRunD()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>VEHICLE CABIN GAIN</label>
+        <select id="sp_veh" onchange="splRun()">
+          <option value="7">Standard (+7 dB)</option>
+          <!-- ADD CABIN GAIN OPTIONS HERE -->
+        </select>
+      </div>
+      <div class="ig"><label>SPL MODE</label>
+        <select id="sp_mode" onchange="splRun()">
+          <option value="daily">Daily Driver</option>
+          <option value="spl">SPL / Show</option>
+          <option value="comp">Competition Burp</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="splbig" id="spl-big">-- dB</div>
+    <div id="spl-tiers"></div>
+  </div>
+  <div class="card"><div class="ct pu">// BREAKDOWN</div><div id="spl-rows"></div></div>
+  <div class="ti warn" style="margin:0 0 10px;">⚠️ Estimate only. Actual SPL varies with install, acoustics, signal chain, and mic placement.</div>
+</div>
+
+<!-- ═══ SUBS ═══ -->
+<div class="panel" id="panel-subs">
+  <div class="card lit">
+    <div class="ct">// SUBWOOFER DATABASE — 856 MODELS</div>
+    <div style="position:relative;margin-bottom:12px;">
+      <input type="text" id="db-search-input" placeholder="&#x1F50D;  Search brand or model..." autocomplete="off"
+        oninput="dbSearch(this.value)"
+        style="width:100%;background:var(--stone3);border:1px solid var(--stone4);border-radius:10px;padding:12px 14px 12px 14px;color:var(--wh);font-family:Share Tech Mono,monospace;font-size:13px;outline:none;box-sizing:border-box;">
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:4px;flex-wrap:wrap;">
+      <div style="font-family:Share Tech Mono,monospace;font-size:7px;color:var(--mu);letter-spacing:2px;width:100%;margin-bottom:2px;">FILTER BY SIZE</div>
+      <button class="db-size-btn" onclick="dbSetSizeFilter('8',this)"  style="flex:1;padding:6px 4px;background:var(--stone3);border:1px solid var(--stone4);border-radius:6px;cursor:pointer;font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu2);">8"</button>
+      <button class="db-size-btn" onclick="dbSetSizeFilter('10',this)" style="flex:1;padding:6px 4px;background:var(--stone3);border:1px solid var(--stone4);border-radius:6px;cursor:pointer;font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu2);">10"</button>
+      <button class="db-size-btn" onclick="dbSetSizeFilter('12',this)" style="flex:1;padding:6px 4px;background:var(--stone3);border:1px solid var(--stone4);border-radius:6px;cursor:pointer;font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu2);">12"</button>
+      <button class="db-size-btn" onclick="dbSetSizeFilter('15',this)" style="flex:1;padding:6px 4px;background:var(--stone3);border:1px solid var(--stone4);border-radius:6px;cursor:pointer;font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu2);">15"</button>
+      <button class="db-size-btn" onclick="dbSetSizeFilter('18',this)" style="flex:1;padding:6px 4px;background:var(--stone3);border:1px solid var(--stone4);border-radius:6px;cursor:pointer;font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu2);">18"</button>
+    </div>
+  </div>
+  <div id="db-spec-card" class="card" style="display:none;">
+    <div class="ct fire">// SELECTED SUB</div>
+    <div class="bn3" id="db-big"></div>
+    <div id="db-rows" style="margin-top:8px;"></div>
+    <div id="db-ts-results" style="display:none;margin-top:8px;">
+      <div class="ct gr">// TS-DERIVED BOX MATH</div>
+      <div id="db-ts-content"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button class="btn gr-btn" style="flex:1;" onclick="dbLoadToForge()">⚡ LOAD TO FORGE</button>
+      <button class="btn outline sm" style="flex:1;" onclick="dbShowTS()">📐 TS MATH</button>
+    </div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden;"><button onclick="toggleBrandsAccordion()" id="db-brands-btn" style="width:100%;background:none;border:none;border-bottom:1px solid transparent;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:border-color .2s;"><span style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--fire);letter-spacing:2px;">// SELECT BRAND</span><span id="db-brands-arrow" style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--mu);">&#x25BC; BRANDS</span></button><div id="db-brand-grid" style="display:none;padding:12px;border-top:1px solid var(--stone4);"></div></div>
+  <div id="db-model-list" style="margin-bottom:8px;max-height:65vh;overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
+  <select id="db_brand" style="display:none;" onchange="dbLoadModels()"><option value=""></option></select>
+  <select id="db_model" style="display:none;" onchange="dbShowSpec()"><option value=""></option></select>
+  <div id="db-all" style="display:none;"></div>
+  <div class="disc">All brand names and trademarks are property of their respective owners. BassForge is not affiliated with any manufacturer. Always verify specs against official documentation.</div>
+</div>
+
+<!-- ═══ CUTS ═══ -->
+<div class="panel" id="panel-cuts">
+  <div class="card lit">
+    <div class="ct">// CUT SHEET ENGINE</div>
+    <div class="g3">
+      <div class="ig"><label>WIDTH (IN)</label><input type="number" id="cs_w" value="32" step="0.5" inputmode="decimal" oninput="cutsRunD()"></div>
+      <div class="ig"><label>HEIGHT (IN)</label><input type="number" id="cs_h" value="15" step="0.5" inputmode="decimal" oninput="cutsRunD()"></div>
+      <div class="ig"><label>DEPTH (IN)</label><input type="number" id="cs_d" value="18" step="0.5" inputmode="decimal" oninput="cutsRunD()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>PORT WIDTH (IN)</label><input type="number" id="cs_pw" value="3" step="0.25" inputmode="decimal" oninput="cutsRunD()"></div>
+      <div class="ig"><label>NUM SUBS</label>
+        <select id="cs_ns" onchange="cutsRun()"><option value="1" selected>1 Sub</option><option value="2">2 Subs</option><option value="3">3 Subs</option><option value="4">4 Subs</option></select>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>MATERIAL</label>
+        <select id="cs_mat" onchange="cutsRun()">
+          <option value="mdf50">1/2" MDF (~$30)</option>
+          <option value="mdf75" selected>3/4" MDF (~$42)</option>
+          <option value="mdf1">1" MDF (~$55)</option>
+          <option value="birch75">3/4" Birch (~$75)</option>
+          <option value="baltic">3/4" Baltic Birch (~$95)</option>
+        </select>
+      </div>
+      <div class="ig"><label>DOUBLE BAFFLE</label>
+        <select id="cs_db" onchange="cutsRun()"><option value="0">No</option><option value="1">Yes (+1 layer)</option></select>
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">// PANEL CUT LIST</div><div id="cut-list"></div><div class="matnote" id="mat-note"></div></div>
+  <div class="card">
+    <div class="ct">// SHEET OPTIMIZER — VISUAL LAYOUT</div>
+    <div class="g2" style="margin-bottom:10px;">
+      <div class="ig"><label>KERF ALLOWANCE (IN)</label>
+        <select id="cs_kerf" onchange="cutsRun()">
+          <option value="0">None</option>
+          <option value="0.125" selected>1/8" Standard</option>
+          <option value="0.1875">3/16" Wide Blade</option>
+        </select>
+      </div>
+      <div class="ig"><label>SHEET SIZE</label>
+        <select id="cs_sheet" onchange="cutsRun()">
+          <option value="4896" selected>Standard 4'×8' (48"×96")</option>
+          <option value="4897">Baltic 4'×8' (49"×97")</option>
+          <option value="60120">5'×10' (60"×120")</option>
+        </select>
+      </div>
+    </div>
+    <div id="sheet-canvases"></div>
+    <div class="matnote" id="sheet-note" style="margin-top:8px;"></div>
+  </div>
+  <button class="btn ice-btn" style="margin-bottom:10px;" onclick="exportPDF()">📄 EXPORT PDF BLUEPRINT</button>
+  <div class="card" id="brace-advisor-card" style="display:none;">
+    <div class="ct gr">// BRACING ADVISOR</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:8px;line-height:1.5;">Based on your box size and power — exact braces to cut and where to put them.</p>
+    <div id="brace-output"></div>
+  </div>
+</div>
+
+<!-- ═══ AUDIT ═══ -->
+<div class="panel" id="panel-audit">
+  <div class="card" id="audit-empty">
+    <div style="text-align:center;padding:30px 0;">
+      <div style="font-size:36px;margin-bottom:10px;">🔍</div>
+      <div style="font-family:'Russo One',sans-serif;font-size:14px;color:var(--mu2);">No audit run yet.</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--mu);margin-top:6px;">Go to FORGE → RUN FULL TIA AUDIT</div>
+      <button class="btn outline sm" style="max-width:180px;margin:16px auto 0;display:block;" onclick="sw('forge')">GO TO FORGE →</button>
+    </div>
+  </div>
+  <div id="audit-content" style="display:none;">
+    <div class="card lit">
+      <div class="ct">// FULL SYSTEM AUDIT</div>
+      <div id="audit-ts" style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);margin-bottom:10px;"></div>
+      <div id="forge-cert"></div>
+      <div class="sw"><div class="snum" id="audit-sc">--</div><div class="slbl">SYSTEM HEALTH SCORE</div></div>
+      <div class="hbl"><span>CRITICAL</span><span>POOR</span><span>FAIR</span><span>GOOD</span><span>OPTIMAL</span></div>
+      <div class="hbw"><div class="hbf" id="audit-hb" style="width:0%"></div></div>
+    </div>
+    <div class="card"><div class="ct">// MODULE SUMMARY</div><div id="audit-sum"></div></div>
+    <div class="card"><div class="ct">// TIA FINDINGS</div><div id="audit-find"></div></div>
+    <div class="card"><div class="ct">// INSTALL CHECKLIST</div><div id="audit-chk"></div></div>
+    <button class="btn ice-btn" style="margin-bottom:10px;" onclick="exportPDF()">📄 EXPORT BLUEPRINT PDF</button>
+    <div class="disc">BassForge v24.0 · Low End Labs · Est. 2026<br>All calculations are estimates for planning purposes. Always verify with a licensed installer.</div>
+  </div>
+</div>
+
+
+<div class="panel" id="panel-comp">
+  <div class="card lit">
+    <div class="ct pu">// SUB COMPARISON TOOL</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Compare up to 4 subs side by side. Load from the database or enter custom specs. Set your power once — see how each sub handles it.</p>
+    <div class="g2">
+      <div class="ig"><label>AMP POWER (RMS W)</label><input type="number" id="cmp_rms" value="1500" inputmode="numeric" oninput="cmpRun()"></div>
+      <div class="ig"><label>TEST BOX (ft³)</label><input type="number" id="cmp_vol" value="1.0" step="0.25" inputmode="decimal" oninput="cmpRun()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>TUNING (Hz)</label><input type="number" id="cmp_tune" value="36" inputmode="numeric" oninput="cmpRun()"></div>
+      <div class="ig"><label>FINAL LOAD (Ω)</label>
+        <select id="cmp_ohms" onchange="cmpRun()">
+          <option value="0.5">0.5Ω</option><option value="1" selected>1Ω</option>
+          <option value="2">2Ω</option><option value="4">4Ω</option>
+        </select>
+      </div>
+    </div>
+    <div class="tg" style="margin-bottom:0;">
+      <button class="on" id="cmp_db_btn" onclick="setCmpMode('db',this)">FROM DATABASE</button>
+      <button id="cmp_custom_btn" onclick="setCmpMode('custom',this)">CUSTOM SPECS</button>
+    </div>
+  </div>
+  <div id="cmp-slots"></div>
+  <button class="btn outline sm" id="cmp-add-btn" style="margin-bottom:10px;" onclick="cmpAddSlot()">+ ADD SUB TO COMPARE</button>
+  <div id="cmp-results" style="display:none;">
+    <div class="card"><div class="ct pu">// HEAD-TO-HEAD RESULTS</div><div id="cmp-table" style="overflow-x:auto;"></div></div>
+    <div class="card"><div class="ct pu">// VERDICT</div><div id="cmp-verdict"></div></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-studio">
+  <div class="card lit">
+    <div class="ct gr">// REBASS ENGINE</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Upload a track and apply bass boost + compression. Downloads as a processed WAV.</p>
+    <div class="ig" style="margin-bottom:12px;">
+      <label>SELECT AUDIO FILE</label>
+      <input type="file" id="audio-upload" accept="audio/*" style="background:var(--stone3);border:1px solid var(--stone4);border-radius:8px;padding:12px 10px;color:var(--wh);font-family:Share Tech Mono,monospace;font-size:11px;width:100%;outline:none;">
+    </div>
+    <div class="g2">
+      <div class="ig"><label>BASS BOOST (dB)</label><input type="number" id="rb_gain" value="8" min="0" max="24" inputmode="numeric" class="inp"></div>
+      <div class="ig"><label>CUTOFF (Hz)</label><input type="number" id="rb_freq" value="60" min="20" max="200" inputmode="numeric" class="inp"></div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-family:Share Tech Mono,monospace;font-size:8px;color:var(--mu);letter-spacing:1px;display:block;margin-bottom:6px;">CUTOFF Hz</label>
+      <input type="range" id="rb_freq_slider" min="20" max="200" value="60" step="5"
+        style="width:100%;accent-color:var(--gr);height:6px;cursor:pointer;"
+        oninput="document.getElementById('rb_freq').value=this.value; document.getElementById('rb_freq_lbl').textContent=this.value+' Hz'">
+      <div style="font-family:Share Tech Mono,monospace;font-size:9px;color:var(--gr);text-align:right;margin-top:2px;" id="rb_freq_lbl">60 Hz</div>
+    </div>
+    <button class="btn gr-btn" id="rb-process-btn" onclick="processRebass()" style="background:var(--gr);color:#000;">&#9889; PROCESS REBASS</button>
+    <div id="studio-status" style="margin-top:10px;font-family:Share Tech Mono,monospace;font-size:10px;text-align:center;color:var(--mu);">IDLE</div>
+  </div>
+  <div class="card" id="rebass-player-card" style="display:none;">
+    <div class="ct gr">// OUTPUT</div>
+    <audio id="audio-player" controls style="width:100%;margin-bottom:10px;"></audio>
+    <a id="rebass-download-link" class="btn" style="display:block;text-align:center;text-decoration:none;background:var(--ice);color:#000;">&#128190; DOWNLOAD PROCESSED WAV</a>
+  </div>
+</div>
+
+<div class="panel" id="panel-social">
+  <div class="card lit" style="border-bottom:2px solid var(--fire);">
+    <div class="ct fire">// COMMUNITY FEED</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Share your build. See what others are running. Community features coming in v4.0 with account login.</p>
+    <button class="btn outline sm" onclick="alert('Account system coming in v4.0 — stay tuned!')">&#43; POST YOUR BUILD</button>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-family:Russo One,sans-serif;color:var(--gd);font-size:13px;">@BassHead_99</div>
+      <span style="background:var(--fire);color:#000;font-family:Share Tech Mono,monospace;font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;">155.2 dB</span>
+    </div>
+    <div style="width:100%;height:140px;background:var(--stone3);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--mu);font-family:Share Tech Mono,monospace;font-size:9px;letter-spacing:2px;margin-bottom:10px;">[ BUILD PHOTO ]</div>
+    <div class="g2">
+      <div class="rl"><span class="rk">SUB</span><span class="rv">2x Sundown SA-12</span></div>
+      <div class="rl"><span class="rk">TUNING</span><span class="rv gd">32 Hz</span></div>
+    </div>
+    <div class="rl"><span class="rk">AMP</span><span class="rv">Taramp Bass 8K</span></div>
+    <div class="rl"><span class="rk">BOX</span><span class="rv">4.2 ft&#179; ported</span></div>
+    <div class="ti info" style="margin-top:6px;">&#128197; Posted 3/14/2026</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-family:Russo One,sans-serif;color:var(--ice);font-size:13px;">@DailyDriver_Marshall</div>
+      <span style="background:var(--gd);color:#000;font-family:Share Tech Mono,monospace;font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;">DAILY</span>
+    </div>
+    <div style="width:100%;height:140px;background:var(--stone3);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--mu);font-family:Share Tech Mono,monospace;font-size:9px;letter-spacing:2px;margin-bottom:10px;">[ BUILD PHOTO ]</div>
+    <div class="rl"><span class="rk">SUB</span><span class="rv">2x CT Sound Meso-10</span></div>
+    <div class="rl"><span class="rk">AMP</span><span class="rv">Taramp MD-3000</span></div>
+    <div class="rl"><span class="rk">CAR</span><span class="rv">2024 Mitsubishi Mirage G4</span></div>
+    <div class="rl"><span class="rk">TUNING</span><span class="rv gd">32 Hz ported</span></div>
+    <div class="ti ok" style="margin-top:6px;">&#128293; Daily driver build. Powered by BassForge.</div>
+  </div>
+</div>
+
+<div class="panel" id="panel-hair">
+  <div class="card lit" style="border-color:rgba(255,208,0,.3);">
+    <div style="text-align:center;padding:10px 0 16px;">
+      <div style="font-size:40px;">💨</div>
+      <div style="font-family:Black Ops One,cursive;font-size:22px;color:var(--gd);letter-spacing:3px;">HAIR TRICK</div>
+      <div style="font-family:Share Tech Mono,monospace;font-size:9px;color:var(--mu);margin-top:4px;">FIND THE LOUDEST BUILD THAT FITS YOUR CAR</div>
+    </div>
+    <div class="ig"><label>YOUR VEHICLE</label>
+      <select id="ht_veh" onchange="hairTrickRun()" style="background:var(--stone3);border:1px solid var(--stone4);border-radius:8px;padding:10px 11px;color:var(--wh);font-family:Share Tech Mono,monospace;font-size:12px;width:100%;outline:none;-webkit-appearance:none;">
+        <option value="standard">Standard Trunk</option>
+        <!-- ADD VEHICLES HERE -->
+      </select>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>AMP POWER (W)</label><input type="number" id="ht_rms" value="1500" inputmode="numeric" oninput="hairTrickRun()"></div>
+      <div class="ig"><label>GOAL</label>
+        <select id="ht_goal" onchange="hairTrickRun()">
+          <option value="loud">Loudest possible</option>
+          <option value="spl">Max SPL / comp</option>
+          <option value="sq">Sound quality</option>
+        </select>
+      </div>
+    </div>
+    <div class="ig" style="margin-bottom:12px;"><label>BUDGET</label>
+      <select id="ht_budget" onchange="hairTrickRun()">
+        <option value="any">No limit</option>
+        <option value="mid">Mid range (≤3000W subs)</option>
+        <option value="entry">Entry level (≤1500W subs)</option>
+      </select>
+    </div>
+    <button class="btn" style="background:var(--gd);color:#000;" onclick="hairTrickRun()">💨 FIND MY HAIR TRICK BUILD</button>
+  </div>
+  <div id="ht-res" style="display:none;"><div id="ht-result"></div></div>
+</div>
+
+<div class="panel" id="panel-quote">
+  <div class="card lit">
+    <div class="ct fire">// PRO INSTALLER QUOTE</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Generate a professional quote PDF with your company name, itemized material costs, and labor. Adjustable for your region.</p>
+    <div class="ig" style="margin-bottom:8px;"><label>COMPANY NAME</label>
+      <input type="text" id="q_company" value="Low End Labs" style="background:var(--stone3);border:1px solid var(--stone4);border-radius:8px;padding:10px 11px;color:var(--wh);font-family:Share Tech Mono,monospace;font-size:13px;width:100%;outline:none;" oninput="quoteRun()">
+    </div>
+    <div class="g2">
+      <div class="ig"><label>LABOR COST ($)</label><input type="number" id="q_labor" value="150" inputmode="numeric" oninput="quoteRun()"></div>
+      <div class="ig"><label>MARKUP (%)</label><input type="number" id="q_markup" value="15" min="0" max="100" inputmode="numeric" oninput="quoteRun()"></div>
+    </div>
+    <div class="ct gd" style="margin-top:4px;">// MATERIAL COSTS — ADJUST FOR YOUR AREA</div>
+    <div class="g2">
+      <div class="ig"><label>WOOD / SHEET ($)</label><input type="number" id="q_wood" value="42" inputmode="numeric" oninput="quoteRun()"></div>
+      <div class="ig"><label>CAULK / SEALANT ($)</label><input type="number" id="q_caulk" value="8" inputmode="numeric" oninput="quoteRun()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>SCREWS / HARDWARE ($)</label><input type="number" id="q_screws" value="6" inputmode="numeric" oninput="quoteRun()"></div>
+      <div class="ig"><label>WIRE / POWER ($)</label><input type="number" id="q_wire" value="25" inputmode="numeric" oninput="quoteRun()"></div>
+    </div>
+    <div class="ig" style="margin-bottom:12px;"><label>MISC MATERIALS ($)</label><input type="number" id="q_misc" value="20" inputmode="numeric" oninput="quoteRun()"></div>
+    <p style="font-size:10px;color:var(--mu2);margin-bottom:8px;">Box dimensions pull from the CUTS tab. Set up your box there first.</p>
+  </div>
+  <div id="quote-res" style="display:none;">
+    <div class="card"><div class="ct gd">// QUOTE BREAKDOWN</div><div id="quote-out"></div></div>
+  </div>
+  <button class="btn" onclick="exportQuotePDF()">📄 EXPORT QUOTE AS PDF</button>
+</div>
+
+<div class="panel" id="panel-led">
+  <div class="card lit">
+    <div class="ct ice">// LED LIGHTING CALCULATOR</div>
+    <p style="font-size:11px;color:var(--mu2);margin-bottom:10px;line-height:1.5;">Calculate how much LED strip you need and the exact router bit for a hidden channel so the strip disappears into the wood.</p>
+    <div class="g3">
+      <div class="ig"><label>BOX WIDTH (IN)</label><input type="number" id="led_w" value="32" step="0.5" inputmode="decimal" oninput="ledRun()"></div>
+      <div class="ig"><label>BOX HEIGHT (IN)</label><input type="number" id="led_h" value="15" step="0.5" inputmode="decimal" oninput="ledRun()"></div>
+      <div class="ig"><label>BOX DEPTH (IN)</label><input type="number" id="led_d" value="18" step="0.5" inputmode="decimal" oninput="ledRun()"></div>
+    </div>
+    <div class="g2">
+      <div class="ig"><label>COVERAGE</label>
+        <select id="led_sides" onchange="ledRun()">
+          <option value="front">Front baffle only</option>
+          <option value="interior" selected>Interior all faces</option>
+          <option value="full">Full exterior wrap</option>
+        </select>
+      </div>
+      <div class="ig"><label>STRIP WIDTH (mm)</label><input type="number" id="led_strip_w" value="10" min="8" max="20" inputmode="numeric" oninput="ledRun()"></div>
+    </div>
+    <button class="btn outline sm" onclick="ledRun()">CALCULATE</button>
+  </div>
+  <div id="led-res" style="display:none;"><div class="card"><div class="ct ice">// RESULTS</div><div id="led-out"></div></div></div>
+</div>
+
+<!-- TRUNK SPEC -->
+<div class="panel" id="panel-trunk">
+  <div style="display:flex;gap:6px;margin-bottom:12px;">
+    <button id="tst-add" onclick="tksw('add')" style="flex:1;padding:9px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1.5px;background:var(--fire);color:#fff;border:none;border-radius:8px;cursor:pointer;">+ ADD</button>
+    <button id="tst-db"  onclick="tksw('db')"  style="flex:1;padding:9px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1.5px;background:var(--stone4);color:var(--mu);border:1px solid var(--stone5);border-radius:8px;cursor:pointer;">DATABASE (<span id="tk-count">0</span>)</button>
+    <button id="tst-exp" onclick="tksw('exp')" style="flex:1;padding:9px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1.5px;background:var(--stone4);color:var(--mu);border:1px solid var(--stone5);border-radius:8px;cursor:pointer;">EXPORT</button>
+  </div>
+  <div id="tkp-add">
+    <div class="card"><div class="ct">// VEHICLE INFO</div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div class="ig"><label>YEAR</label><input type="number" id="tk_year" placeholder="2019" class="inp"></div>
+        <div class="ig"><label>MAKE</label><input type="text" id="tk_make" placeholder="Chevy" class="inp"></div>
+        <div class="ig"><label>MODEL</label><input type="text" id="tk_model" placeholder="Silverado" class="inp"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="ig"><label>TRIM</label><input type="text" id="tk_trim" placeholder="Crew Cab" class="inp"></div>
+        <div class="ig"><label>PLACEMENT</label>
+          <select id="tk_place" class="inp">
+            <option value="trunk">Trunk</option>
+            <option value="rear_seat">Behind Rear Seat</option>
+            <option value="truck_bed">Truck Bed</option>
+            <option value="under_seat">Under Seat</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--stone);border:1px solid var(--stone5);border-radius:10px;padding:10px;margin-bottom:10px;text-align:center;">
+      <canvas id="tk-diag" height="130" style="width:100%;max-width:340px;display:block;margin:0 auto;"></canvas>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);margin-top:4px;letter-spacing:1px;">MEASURE INSIDE - NOT OUTSIDE BODY PANELS</div>
+    </div>
+    <div class="card"><div class="ct">// TRUNK OPENING</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);margin-bottom:8px;">The hole your box must pass through to get inside</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="ig"><label>OPEN WIDTH</label><input type="number" id="tk_ow" placeholder="44" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">inches</div></div>
+        <div class="ig"><label>OPEN HEIGHT</label><input type="number" id="tk_oh" placeholder="18" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">bumper to lip</div></div>
+        <div class="ig"><label>OPEN DEPTH</label><input type="number" id="tk_od" placeholder="8" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">into trunk</div></div>
+      </div>
+    </div>
+    <div class="card"><div class="ct">// INTERIOR MAX DIMENSIONS</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);margin-bottom:8px;">Biggest box that could physically fit inside</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="ig"><label>INT WIDTH</label><input type="number" id="tk_iw" placeholder="52" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">wall to wall</div></div>
+        <div class="ig"><label>INT HEIGHT</label><input type="number" id="tk_ih" placeholder="14" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">floor to lid</div></div>
+        <div class="ig"><label>INT DEPTH</label><input type="number" id="tk_id" placeholder="24" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">seat to wall</div></div>
+      </div>
+    </div>
+    <div class="card"><div class="ct">// WHEEL WELLS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="ig"><label>FLOOR WIDTH</label><input type="number" id="tk_ww" placeholder="38" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">between wells</div></div>
+        <div class="ig"><label>PROTRUSION</label><input type="number" id="tk_wp" placeholder="4" step="0.25" oninput="tkDiag()" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">each side</div></div>
+        <div class="ig"><label>WELL HEIGHT</label><input type="number" id="tk_wh" placeholder="6" step="0.25" class="inp tc"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--mu);text-align:center;margin-top:2px;">off floor</div></div>
+      </div>
+    </div>
+    <div class="card"><div class="ct">// FLOOR AND NOTES</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div class="ig"><label>FLOOR TYPE</label>
+          <select id="tk_floor" class="inp">
+            <option value="flat">Flat</option>
+            <option value="spare_well">Spare Tire Well</option>
+            <option value="stepped">Stepped</option>
+            <option value="angled">Angled</option>
+          </select>
+        </div>
+        <div class="ig"><label>FOLD SEAT?</label>
+          <select id="tk_fold" class="inp">
+            <option value="no">No</option>
+            <option value="partial">Partial</option>
+            <option value="full">Full Fold</option>
+          </select>
+        </div>
+      </div>
+      <div class="ig" style="margin-bottom:8px;"><label>INSTALL NOTES</label><input type="text" id="tk_notes" placeholder="tight spots, angles, lid struts, etc..." class="inp"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="ig"><label>SUBMITTED BY</label><input type="text" id="tk_by" placeholder="Your name" class="inp"></div>
+        <div class="ig"><label>VERIFIED?</label>
+          <select id="tk_ver" class="inp">
+            <option value="built">Yes - Built it</option>
+            <option value="measured">Measured only</option>
+            <option value="estimated">Estimated</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button class="btn fire-btn" onclick="tkSave()">SAVE TO DATABASE</button>
+    <button class="btn outline" style="margin-bottom:10px;" onclick="tkClear()">CLEAR FORM</button>
+  </div>
+  <div id="tkp-db" style="display:none;">
+    <div id="tk-db-hdr" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--mu);letter-spacing:2px;margin-bottom:8px;">NO ENTRIES YET</div>
+    <input id="tk-search" type="text" placeholder="🔍  Search make, model, year..." oninput="tkRenderDB()" style="width:100%;box-sizing:border-box;background:#141414;border:1px solid #333;border-radius:8px;padding:10px 12px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--wh);margin-bottom:10px;outline:none;">
+    <div id="tk-list"><div style="text-align:center;padding:40px 20px;color:var(--mu);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;">NO VEHICLES YET - TAP ADD TO START</div></div>
+  </div>
+  <div id="tkp-exp" style="display:none;">
+    <div class="card"><div class="ct">// JSON EXPORT</div>
+      <p style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu);line-height:1.8;margin-bottom:10px;">Copy into BassForge VDB or send to a dev to load into the database.</p>
+      <button class="btn ice-btn" style="margin-bottom:8px;" onclick="tkCopyJSON()">COPY JSON</button>
+      <div style="background:var(--stone);border:1px solid var(--stone5);border-radius:8px;padding:10px;max-height:200px;overflow-y:auto;"><div id="tk-json" style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu2);line-height:1.6;word-break:break-all;">No data yet.</div></div>
+    </div>
+    <div class="card"><div class="ct">// CSV EXPORT</div>
+      <button class="btn gr-btn" style="margin-bottom:8px;" onclick="tkCopyCSV()">COPY CSV</button>
+      <div style="background:var(--stone);border:1px solid var(--stone5);border-radius:8px;padding:10px;max-height:200px;overflow-y:auto;"><div id="tk-csv" style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--mu2);line-height:1.6;word-break:break-all;">No data yet.</div></div>
+    </div>
+  </div>
+</div>
+</div><!-- /panels -->
+
+
+
+
+  <!-- ═══ DATA FILES — edit these, not the HTML ═══ -->
+  <script src="subs.js"></script>
+  <script src="vehicles.js"></script>
+  <script src="amps.js"></script>
+  <script src="data.js"></script>
+  <!-- ═══ ENGINE ═══ -->
+  <script src="engine.js"></script>
+
+</body>
